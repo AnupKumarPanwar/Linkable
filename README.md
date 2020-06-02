@@ -1,6 +1,6 @@
 # linkable
 
-A Flutter widget to add links to your text. By default, the `Text` or `RichText` widgets render the URLs in them as simple text which are not clickable. So, `Linkable` widget is a wrapper over `RichText` which allows you to render links that can be clicked to redirect to the URL.
+A Flutter widget to add links to your text. By default, the `Text` or `RichText` widgets render the URLs in them as simple text which are not clickable. So, `Linkable` widget is a wrapper over `RichText` which allows you to render links that can be clicked to redirect to the URL. That means that a `Linkable` widget supports all the attributes of a `RichText` Widget.
 
 Currently linkable supports the following types:
 - Web URL (https://www.github.com/anupkumarpanwar)
