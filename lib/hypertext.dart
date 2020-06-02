@@ -5,6 +5,7 @@ import 'dart:developer';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:hypertext/constants.dart';
+import 'package:hypertext/emailParser.dart';
 import 'package:hypertext/link.dart';
 import 'package:hypertext/parser.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -93,7 +94,9 @@ class _HypertextState extends State<Hypertext> {
     );
   }
 
-  _addParsers() {}
+  _addParsers() {
+    _parsers.add(EmailParser(widget.text));
+  }
 
   _parseLinks() {
     for (Parser parser in _parsers) {
