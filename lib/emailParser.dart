@@ -1,6 +1,6 @@
-import 'package:hypertext/constants.dart';
-import 'package:hypertext/link.dart';
-import 'package:hypertext/parser.dart';
+import 'package:linkable/constants.dart';
+import 'package:linkable/link.dart';
+import 'package:linkable/parser.dart';
 
 class EmailParser implements Parser {
   String text;

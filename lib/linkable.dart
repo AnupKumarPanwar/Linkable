@@ -1,18 +1,16 @@
-library hypertext;
-
-import 'dart:developer';
+library linkable;
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:hypertext/constants.dart';
-import 'package:hypertext/emailParser.dart';
-import 'package:hypertext/httpParser.dart';
-import 'package:hypertext/link.dart';
-import 'package:hypertext/parser.dart';
-import 'package:hypertext/telParser.dart';
+import 'package:linkable/constants.dart';
+import 'package:linkable/emailParser.dart';
+import 'package:linkable/httpParser.dart';
+import 'package:linkable/link.dart';
+import 'package:linkable/parser.dart';
+import 'package:linkable/telParser.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Hypertext extends StatefulWidget {
+class Linkable extends StatefulWidget {
   final String text;
 
   final textColor;
@@ -41,7 +39,7 @@ class Hypertext extends StatefulWidget {
 
   var textHeightBehavior;
 
-  Hypertext({
+  Linkable({
     Key key,
     @required this.text,
     this.textColor = Colors.black,
@@ -60,10 +58,10 @@ class Hypertext extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _HypertextState createState() => _HypertextState();
+  _LinkableState createState() => _LinkableState();
 }
 
-class _HypertextState extends State<Hypertext> {
+class _LinkableState extends State<Linkable> {
   List<Parser> _parsers = List<Parser>();
   List<Link> _links = List<Link>();
 
@@ -148,7 +146,6 @@ class _HypertextState extends State<Hypertext> {
   }
 
   _launch(String url) async {
-    log(url);
     if (await canLaunch(url)) {
       await launch(url);
     } else {

@@ -1,3 +1,3 @@
-## [1.0.0] - TODO: Add release date.
+## [1.0.0] - 2 June 2020.
 
-* TODO: Describe initial release.
+* Add link to websites, emails, telephones numbers.

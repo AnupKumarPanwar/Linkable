@@ -1,8 +1,7 @@
-name: hypertext
+name: linkable
 description: A Flutter widget to add links to your text.
 version: 1.0.0
-author: anupkumarpanwar
-homepage: https://github.com/AnupKumarPanwar/Hypertext
+homepage: https://github.com/AnupKumarPanwar/Linkable
 
 environment:
   sdk: ">=2.7.0 <3.0.0"

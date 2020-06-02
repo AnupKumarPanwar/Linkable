@@ -1,4 +1,4 @@
-# hypertext
+# linkable
 
 A Flutter widget to add links to your text.
 
@@ -6,15 +6,15 @@ A Flutter widget to add links to your text.
 To install the package, add the following dependency to your `pubspec.yaml`
 ```
 dependencies:
-  hypertext: ^3.1.3
+  linkable: ^3.1.3
   url_launcher: ^5.4.10
 ```
 ## Usage
 ### Basic
 ```
-import 'package:hypertext/hypertext.dart';
+import 'package:linkable/linkable.dart';
 
-Hypertext(
+Linkable(
 	text:
 	"Hi!\nI'm Anup.\n\nYou can email me at 1anuppanwar@gmail.com.\nOr just whatsapp me @ +91-8968894728.\n\nFor more info visit: \ngithub.com/anupkumarpanwar \nor\nhttps://www.linkedin.com/in/anupkumarpanwar/",
 );
