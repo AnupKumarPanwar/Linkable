@@ -9,6 +9,7 @@ import 'package:hypertext/emailParser.dart';
 import 'package:hypertext/httpParser.dart';
 import 'package:hypertext/link.dart';
 import 'package:hypertext/parser.dart';
+import 'package:hypertext/telParser.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Hypertext extends StatefulWidget {
@@ -98,6 +99,7 @@ class _HypertextState extends State<Hypertext> {
   _addParsers() {
     _parsers.add(EmailParser(widget.text));
     _parsers.add(HttpParser(widget.text));
+    _parsers.add(TelParser(widget.text));
   }
 
   _parseLinks() {
