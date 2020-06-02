@@ -37,7 +37,7 @@ class Linkable extends StatefulWidget {
 
   final textWidthBasis;
 
-  var textHeightBehavior;
+  final textHeightBehavior;
 
   Linkable({
     Key key,
