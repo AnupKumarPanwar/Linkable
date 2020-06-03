@@ -18,7 +18,7 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  hypertext:
+  linkable:
     dependency: "direct main"
     description:
       path: ".."

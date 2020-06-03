@@ -1,5 +1,5 @@
-name: hypertext_example
-description: hypertext example
+name: linkable_example
+description: linkable example
 
 version: 1.0.0
 
@@ -10,7 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   url_launcher: ^5.0.1
-  hypertext:
+  linkable:
     path: ..
 
 flutter:
