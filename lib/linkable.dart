@@ -111,7 +111,9 @@ class _LinkableState extends State<Linkable> {
         (Link a, Link b) => a.regExpMatch.start.compareTo(b.regExpMatch.start));
 
     List<Link> _filteredLinks = List<Link>();
-    _filteredLinks.add(_links[0]);
+    if (_links.length > 0) {
+      _filteredLinks.add(_links[0]);
+    }
 
     for (int i = 0; i < _links.length - 1; i++) {
       if (_links[i + 1].regExpMatch.start > _links[i].regExpMatch.end) {
