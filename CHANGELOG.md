@@ -9,3 +9,7 @@
 ## [1.0.3] - 3 June 2020.
 
 * Fixed bug when no link is present.
+
+## [1.0.4] - 3 June 2020.
+
+* Convert to stateless widget.

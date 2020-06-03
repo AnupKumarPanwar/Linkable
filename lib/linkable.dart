@@ -10,7 +10,7 @@ import 'package:linkable/parser.dart';
 import 'package:linkable/telParser.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-class Linkable extends StatefulWidget {
+class Linkable extends StatelessWidget {
   final String text;
 
   final textColor;
@@ -39,6 +39,9 @@ class Linkable extends StatefulWidget {
 
   final textHeightBehavior;
 
+  List<Parser> _parsers = List<Parser>();
+  List<Link> _links = List<Link>();
+
   Linkable({
     Key key,
     @required this.text,
@@ -58,93 +61,63 @@ class Linkable extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _LinkableState createState() => _LinkableState();
-}
-
-class _LinkableState extends State<Linkable> {
-  List<Parser> _parsers = List<Parser>();
-  List<Link> _links = List<Link>();
-
-  @override
-  void initState() {
-    super.initState();
-    _addParsers();
-    _parseLinks();
-    _filterLinks();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    init();
     return RichText(
-      textAlign: widget.textAlign,
-      textDirection: widget.textDirection,
-      softWrap: widget.softWrap,
-      overflow: widget.overflow,
-      textScaleFactor: widget.textScaleFactor,
-      maxLines: widget.maxLines,
-      locale: widget.locale,
-      strutStyle: widget.strutStyle,
-      textWidthBasis: widget.textWidthBasis,
-      textHeightBehavior: widget.textHeightBehavior,
+      textAlign: textAlign,
+      textDirection: textDirection,
+      softWrap: softWrap,
+      overflow: overflow,
+      textScaleFactor: textScaleFactor,
+      maxLines: maxLines,
+      locale: locale,
+      strutStyle: strutStyle,
+      textWidthBasis: textWidthBasis,
+      textHeightBehavior: textHeightBehavior,
       text: TextSpan(
         text: '',
-        style: widget.style,
+        style: style,
         children: _getTextSpans(),
       ),
     );
-  }
-
-  _addParsers() {
-    _parsers.add(EmailParser(widget.text));
-    _parsers.add(HttpParser(widget.text));
-    _parsers.add(TelParser(widget.text));
-  }
-
-  _parseLinks() {
-    for (Parser parser in _parsers) {
-      _links.addAll(parser.parse().toList());
-    }
-  }
-
-  _filterLinks() {
-    _links.sort(
-        (Link a, Link b) => a.regExpMatch.start.compareTo(b.regExpMatch.start));
-
-    List<Link> _filteredLinks = List<Link>();
-    if (_links.length > 0) {
-      _filteredLinks.add(_links[0]);
-    }
-
-    for (int i = 0; i < _links.length - 1; i++) {
-      if (_links[i + 1].regExpMatch.start > _links[i].regExpMatch.end) {
-        _filteredLinks.add(_links[i + 1]);
-      }
-    }
-    _links = _filteredLinks;
   }
 
   _getTextSpans() {
     List<TextSpan> _textSpans = List<TextSpan>();
     int i = 0;
     int pos = 0;
-    while (i < widget.text.length) {
-      _textSpans.add(_text(widget.text.substring(
+    while (i < text.length) {
+      _textSpans.add(_text(text.substring(
           i,
-          pos < _links.length && i < _links[pos].regExpMatch.start
+          pos < _links.length && i <= _links[pos].regExpMatch.start
               ? _links[pos].regExpMatch.start
-              : widget.text.length)));
-      if (pos < _links.length && i < _links[pos].regExpMatch.start) {
+              : text.length)));
+      if (pos < _links.length && i <= _links[pos].regExpMatch.start) {
         _textSpans.add(_link(
-            widget.text.substring(
+            text.substring(
                 _links[pos].regExpMatch.start, _links[pos].regExpMatch.end),
             _links[pos].type));
         i = _links[pos].regExpMatch.end;
         pos++;
       } else {
-        i = widget.text.length;
+        i = text.length;
       }
     }
     return _textSpans;
+  }
+
+  _text(String text) {
+    return TextSpan(text: text, style: TextStyle(color: textColor));
+  }
+
+  _link(String text, String type) {
+    return TextSpan(
+        text: text,
+        style: TextStyle(color: linkColor),
+        recognizer: TapGestureRecognizer()
+          ..onTap = () {
+            _launch(_getUrl(text, type));
+          });
   }
 
   _launch(String url) async {
@@ -153,20 +126,6 @@ class _LinkableState extends State<Linkable> {
     } else {
       throw 'Could not launch $url';
     }
-  }
-
-  _text(String text) {
-    return TextSpan(text: text, style: TextStyle(color: widget.textColor));
-  }
-
-  _link(String text, String type) {
-    return TextSpan(
-        text: text,
-        style: TextStyle(color: widget.linkColor),
-        recognizer: TapGestureRecognizer()
-          ..onTap = () {
-            _launch(_getUrl(text, type));
-          });
   }
 
   _getUrl(String text, String type) {
@@ -180,5 +139,41 @@ class _LinkableState extends State<Linkable> {
       default:
         return text;
     }
+  }
+
+  init() {
+    _addParsers();
+    _parseLinks();
+    _filterLinks();
+  }
+
+  _addParsers() {
+    _parsers.add(EmailParser(text));
+    _parsers.add(HttpParser(text));
+    _parsers.add(TelParser(text));
+  }
+
+  _parseLinks() {
+    for (Parser parser in _parsers) {
+      _links.addAll(parser.parse().toList());
+    }
+  }
+
+  _filterLinks() {
+    _links.sort(
+            (Link a, Link b) =>
+            a.regExpMatch.start.compareTo(b.regExpMatch.start));
+
+    List<Link> _filteredLinks = List<Link>();
+    if (_links.length > 0) {
+      _filteredLinks.add(_links[0]);
+    }
+
+    for (int i = 0; i < _links.length - 1; i++) {
+      if (_links[i + 1].regExpMatch.start > _links[i].regExpMatch.end) {
+        _filteredLinks.add(_links[i + 1]);
+      }
+    }
+    _links = _filteredLinks;
   }
 }
