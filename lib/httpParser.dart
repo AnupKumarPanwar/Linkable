@@ -11,7 +11,7 @@ class HttpParser implements Parser {
     String pattern =
         r"[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)";
 
-    RegExp regExp = RegExp(pattern);
+    RegExp regExp = RegExp(pattern, caseSensitive: false);
 
     Iterable<RegExpMatch> _allMatches = regExp.allMatches(text);
     List<Link> _links = List<Link>();
