@@ -13,3 +13,7 @@
 ## [1.0.4] - 3 June 2020.
 
 * Convert to stateless widget.
+
+## [1.0.5] - 3 July 2020.
+
+* Changed http url regexp.
