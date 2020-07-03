@@ -9,7 +9,7 @@ class HttpParser implements Parser {
 
   parse() {
     String pattern =
-        r"[(http(s)?):\/\/(www\.)?a-z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-z0-9@:%_\+.~#?&//=]*)";
+        r"(http(s)?:\/\/)?(www.)?[a-zA-Z0-9]{2,256}\.[a-zA-Z0-9]{2,256}(\.[a-zA-Z0-9]{2,256})?([-a-zA-Z0-9@:%_\+~#?&//=]*)";
 
     RegExp regExp = RegExp(pattern, caseSensitive: false);
 
