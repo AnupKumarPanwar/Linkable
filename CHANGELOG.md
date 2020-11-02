@@ -17,3 +17,7 @@
 ## [1.0.5] - 3 July 2020.
 
 * Changed http url regexp.
+
+## [1.0.6] - 2 November 2020.
+
+* Changed http url regexp.
