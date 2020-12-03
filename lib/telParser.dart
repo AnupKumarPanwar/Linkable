@@ -8,7 +8,7 @@ class TelParser implements Parser {
   TelParser(this.text);
 
   parse() {
-    String pattern = r"\+?\(?([0-9]{2,4})\)?[- ]?([0-9]{3,4})[- ]?([0-9]{3,7})";
+    String pattern = r"\+?\(?([0-9]{2,4})\)?[- ]?([0-9]{3,4})[- ]?([0-9]{3,7})[- ]?([0-9]{3,7})";
 
     RegExp regExp = RegExp(pattern);
 
