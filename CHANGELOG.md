@@ -21,3 +21,7 @@
 ## [1.0.6] - 2 November 2020.
 
 * Changed http url regexp.
+
+## [1.0.7] - 24 February 2021.
+
+* Updated url_launcher version.
