@@ -25,3 +25,7 @@
 ## [1.0.7] - 24 February 2021.
 
 * Updated url_launcher version.
+
+## [1.0.8] - 12 March 2021.
+
+* Updated url_launcher version.
