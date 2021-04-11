@@ -29,3 +29,7 @@
 ## [1.0.8] - 12 March 2021.
 
 * Updated url_launcher version.
+
+## [1.0.9] - 11 April 2021.
+
+* Regenerated Podfile to fix failing build in iOS.
