@@ -14,7 +14,7 @@ class HttpParser implements Parser {
     RegExp regExp = RegExp(pattern, caseSensitive: false);
 
     Iterable<RegExpMatch> _allMatches = regExp.allMatches(text);
-    List<Link> _links = List<Link>();
+    List<Link> _links = <Link>[];
     for (RegExpMatch match in _allMatches) {
       _links.add(Link(regExpMatch: match, type: http));
     }

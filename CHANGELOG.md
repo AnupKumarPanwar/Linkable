@@ -33,3 +33,7 @@
 ## [1.0.9] - 11 April 2021.
 
 * Regenerated Podfile to fix failing build in iOS.
+
+## [2.0.0] - 13 June 2021.
+
+* Migrated to null-Safety.

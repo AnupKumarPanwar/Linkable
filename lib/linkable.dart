@@ -39,12 +39,12 @@ class Linkable extends StatelessWidget {
 
   final textHeightBehavior;
 
-  List<Parser> _parsers = List<Parser>();
-  List<Link> _links = List<Link>();
+  List<Parser> _parsers = <Parser>[];
+  List<Link> _links = <Link>[];
 
   Linkable({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
     this.textColor = Colors.black,
     this.linkColor = Colors.blue,
     this.style,
@@ -83,7 +83,7 @@ class Linkable extends StatelessWidget {
   }
 
   _getTextSpans() {
-    List<TextSpan> _textSpans = List<TextSpan>();
+    List<TextSpan> _textSpans = <TextSpan>[];
     int i = 0;
     int pos = 0;
     while (i < text.length) {
@@ -161,10 +161,9 @@ class Linkable extends StatelessWidget {
 
   _filterLinks() {
     _links.sort(
-            (Link a, Link b) =>
-            a.regExpMatch.start.compareTo(b.regExpMatch.start));
+        (Link a, Link b) => a.regExpMatch.start.compareTo(b.regExpMatch.start));
 
-    List<Link> _filteredLinks = List<Link>();
+    List<Link> _filteredLinks = <Link>[];
     if (_links.length > 0) {
       _filteredLinks.add(_links[0]);
     }
