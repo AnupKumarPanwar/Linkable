@@ -25,15 +25,9 @@ class Linkable extends StatelessWidget {
 
   final maxLines;
 
-  final overflow;
-
   final textScaleFactor;
 
-  final softWrap;
-
   final strutStyle;
-
-  final locale;
 
   final textWidthBasis;
 
@@ -50,11 +44,8 @@ class Linkable extends StatelessWidget {
     this.style,
     this.textAlign = TextAlign.start,
     this.textDirection,
-    this.softWrap = true,
-    this.overflow = TextOverflow.clip,
     this.textScaleFactor = 1.0,
     this.maxLines,
-    this.locale,
     this.strutStyle,
     this.textWidthBasis = TextWidthBasis.parent,
     this.textHeightBehavior,
@@ -63,22 +54,19 @@ class Linkable extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     init();
-    return RichText(
-      textAlign: textAlign,
-      textDirection: textDirection,
-      softWrap: softWrap,
-      overflow: overflow,
-      textScaleFactor: textScaleFactor,
-      maxLines: maxLines,
-      locale: locale,
-      strutStyle: strutStyle,
-      textWidthBasis: textWidthBasis,
-      textHeightBehavior: textHeightBehavior,
-      text: TextSpan(
+    return SelectableText.rich(
+      TextSpan(
         text: '',
         style: style,
         children: _getTextSpans(),
       ),
+      textAlign: textAlign,
+      textDirection: textDirection,
+      textScaleFactor: textScaleFactor,
+      maxLines: maxLines,
+      strutStyle: strutStyle,
+      textWidthBasis: textWidthBasis,
+      textHeightBehavior: textHeightBehavior,
     );
   }
 

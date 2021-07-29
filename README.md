@@ -13,8 +13,8 @@ Note: You don't need to specify the URL scheme (mailto, tel etc). The widget wil
 To install the package, add the following dependency to your `pubspec.yaml`
 ```
 dependencies:
-  linkable: ^2.0.0
-  url_launcher: ^6.0.6
+  linkable: ^3.0.0
+  url_launcher: ^6.0.9
 ```
 ## Usage
 ### Basic

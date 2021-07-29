@@ -37,3 +37,7 @@
 ## [2.0.0] - 13 June 2021.
 
 * Migrated to null-Safety.
+
+## [3.0.0] - 29 July 2021.
+
+* Added SelectableText.
