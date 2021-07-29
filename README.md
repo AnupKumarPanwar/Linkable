@@ -13,7 +13,7 @@ Note: You don't need to specify the URL scheme (mailto, tel etc). The widget wil
 To install the package, add the following dependency to your `pubspec.yaml`
 ```
 dependencies:
-  linkable: ^3.0.0
+  linkable: ^3.0.1
   url_launcher: ^6.0.9
 ```
 ## Usage
@@ -37,9 +37,7 @@ Linkable(
 | `textAlign` 		|  TextAlign value. (default: TextAlign.start)						|
 | `textDirection` 	|  Determines the order to lay children out horizontally. 			|
 | `maxLines` 		|  Maximum number of lines to be displayed. 						|
-| `overflow` 		|  Handles text that crosses maxLines. (default: TextOverflow.clip)	|
 | `textScaleFactor`	|  The number of font pixels for each logical pixel. 				|
-| `locale` 			|  Sets text locale.												|
 
 ## Screenshot
 ![Screenshot](./example/screenshot.png)

@@ -41,3 +41,7 @@
 ## [3.0.0] - 29 July 2021.
 
 * Added SelectableText.
+
+## [3.0.1] - 29 July 2021.
+
+* Removed undefined properties.
