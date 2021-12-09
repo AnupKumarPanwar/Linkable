@@ -33,6 +33,10 @@ class Linkable extends StatelessWidget {
 
   final textHeightBehavior;
 
+  final void Function(String value, String type)? onTap;
+
+  final String? mobileRegExp;
+
   List<Parser> _parsers = <Parser>[];
   List<Link> _links = <Link>[];
 
@@ -49,6 +53,8 @@ class Linkable extends StatelessWidget {
     this.strutStyle,
     this.textWidthBasis = TextWidthBasis.parent,
     this.textHeightBehavior,
+    this.onTap,
+    this.mobileRegExp,
   }) : super(key: key);
 
   @override
@@ -70,7 +76,7 @@ class Linkable extends StatelessWidget {
     );
   }
 
-  _getTextSpans() {
+  List<TextSpan> _getTextSpans() {
     List<TextSpan> _textSpans = <TextSpan>[];
     int i = 0;
     int pos = 0;
@@ -94,21 +100,22 @@ class Linkable extends StatelessWidget {
     return _textSpans;
   }
 
-  _text(String text) {
+  TextSpan _text(String text) {
     return TextSpan(text: text, style: TextStyle(color: textColor));
   }
 
-  _link(String text, String type) {
+  TextSpan _link(String text, String type) {
     return TextSpan(
-        text: text,
-        style: TextStyle(color: linkColor),
-        recognizer: TapGestureRecognizer()
-          ..onTap = () {
-            _launch(_getUrl(text, type));
-          });
+      text: text,
+      style: TextStyle(color: linkColor),
+      recognizer: TapGestureRecognizer()
+        ..onTap = onTap != null
+            ? () => onTap!(text, type)
+            : () => _launch(_getUrl(text, type)),
+    );
   }
 
-  _launch(String url) async {
+  void _launch(String url) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -116,7 +123,7 @@ class Linkable extends StatelessWidget {
     }
   }
 
-  _getUrl(String text, String type) {
+  String _getUrl(String text, String type) {
     switch (type) {
       case http:
         return text.substring(0, 4) == 'http' ? text : 'http://$text';
@@ -129,25 +136,30 @@ class Linkable extends StatelessWidget {
     }
   }
 
-  init() {
+  void init() {
     _addParsers();
     _parseLinks();
     _filterLinks();
   }
 
-  _addParsers() {
+  void _addParsers() {
     _parsers.add(EmailParser(text));
     _parsers.add(HttpParser(text));
-    _parsers.add(TelParser(text));
+    _parsers.add(
+      TelParser(
+        text,
+        regExpPattern: mobileRegExp,
+      ),
+    );
   }
 
-  _parseLinks() {
+  void _parseLinks() {
     for (Parser parser in _parsers) {
       _links.addAll(parser.parse().toList());
     }
   }
 
-  _filterLinks() {
+  void _filterLinks() {
     _links.sort(
         (Link a, Link b) => a.regExpMatch.start.compareTo(b.regExpMatch.start));
 
