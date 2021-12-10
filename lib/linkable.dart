@@ -13,25 +13,25 @@ import 'package:url_launcher/url_launcher.dart';
 class Linkable extends StatelessWidget {
   final String text;
 
-  final textColor;
+  final Color? textColor;
 
-  final linkColor;
+  final Color? linkColor;
 
-  final style;
+  final TextStyle? style;
 
-  final textAlign;
+  final TextAlign? textAlign;
 
-  final textDirection;
+  final TextDirection? textDirection;
 
-  final maxLines;
+  final int? maxLines;
 
-  final textScaleFactor;
+  final double? textScaleFactor;
 
-  final strutStyle;
+  final StrutStyle? strutStyle;
 
-  final textWidthBasis;
+  final TextWidthBasis? textWidthBasis;
 
-  final textHeightBehavior;
+  final TextHeightBehavior? textHeightBehavior;
 
   final void Function(String value)? onTelephoneTap;
 
