@@ -33,7 +33,11 @@ class Linkable extends StatelessWidget {
 
   final textHeightBehavior;
 
-  final void Function(String value, String type)? onTap;
+  final void Function(String value)? onTelephoneTap;
+
+  final void Function(String value)? onLinkTap;
+
+  final void Function(String value)? onEmailTap;
 
   final String? mobileRegExp;
 
@@ -53,8 +57,10 @@ class Linkable extends StatelessWidget {
     this.strutStyle,
     this.textWidthBasis = TextWidthBasis.parent,
     this.textHeightBehavior,
-    this.onTap,
     this.mobileRegExp,
+    this.onTelephoneTap,
+    this.onLinkTap,
+    this.onEmailTap,
   }) : super(key: key);
 
   @override
@@ -108,11 +114,27 @@ class Linkable extends StatelessWidget {
     return TextSpan(
       text: text,
       style: TextStyle(color: linkColor),
-      recognizer: TapGestureRecognizer()
-        ..onTap = onTap != null
-            ? () => onTap!(text, type)
-            : () => _launch(_getUrl(text, type)),
+      recognizer: TapGestureRecognizer()..onTap = () => _onTap(text, type),
     );
+  }
+
+  void _onTap(String text, String type) {
+    switch (type) {
+      case http:
+        return onLinkTap != null
+            ? onLinkTap!(text)
+            : _launch(_getUrl(text, type));
+      case email:
+        return onEmailTap != null
+            ? onEmailTap!(text)
+            : _launch(_getUrl(text, type));
+      case tel:
+        return onTelephoneTap != null
+            ? onTelephoneTap!(text)
+            : _launch(_getUrl(text, type));
+      default:
+        return _launch(_getUrl(text, type));
+    }
   }
 
   void _launch(String url) async {
