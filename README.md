@@ -16,6 +16,37 @@ dependencies:
   linkable: ^3.0.1
   url_launcher: ^6.0.9
 ```
+### Android
+
+Starting from API30 (Android 11), your Android app has to list all apps it interacts with.
+
+The following is required in AndroidManifest.xml or links will fail to launch.
+
+```
+<manifest>
+
+    <!-- Nest within the manifest element, not the application element-->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="*/*" />
+        </intent>
+    </queries>
+
+    <application>
+        ....
+    </application>
+</manifest>
+```
+
 ## Usage
 ### Basic
 ```
