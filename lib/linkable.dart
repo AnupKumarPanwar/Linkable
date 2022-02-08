@@ -101,7 +101,7 @@ class Linkable extends StatelessWidget {
   _link(String text, String type) {
     return TextSpan(
         text: text,
-        style: TextStyle(color: linkColor),
+        style: TextStyle(color: linkColor, decoration: TextDecoration.underline),
         recognizer: TapGestureRecognizer()
           ..onTap = () {
             _launch(_getUrl(text, type));
