@@ -19,6 +19,12 @@ class LinkableExample extends StatelessWidget {
                     "Hi!\nI'm Anup.\n\nYou can email me at 1anuppanwar@gmail.com.\nOr just whatsapp me @ +91-8968894728.\n\nFor more info visit: \ngithub.com/anupkumarpanwar \nor\nhttps://www.linkedin.com/in/anupkumarpanwar/",
               ),
             ),
+            Center(
+              child: Linkable(
+                text: "mfaauzii@gmail.com",
+                underline: TextDecoration.underline,
+              ),
+            ),
           ],
         ),
       ),

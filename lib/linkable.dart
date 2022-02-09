@@ -33,6 +33,8 @@ class Linkable extends StatelessWidget {
 
   final textHeightBehavior;
 
+  final underline;
+
   List<Parser> _parsers = <Parser>[];
   List<Link> _links = <Link>[];
 
@@ -49,6 +51,7 @@ class Linkable extends StatelessWidget {
     this.strutStyle,
     this.textWidthBasis = TextWidthBasis.parent,
     this.textHeightBehavior,
+    this.underline,
   }) : super(key: key);
 
   @override
@@ -58,7 +61,7 @@ class Linkable extends StatelessWidget {
       TextSpan(
         text: '',
         style: style,
-        children: _getTextSpans(),
+        children: _getTextSpans(underline),
       ),
       textAlign: textAlign,
       textDirection: textDirection,
@@ -70,7 +73,7 @@ class Linkable extends StatelessWidget {
     );
   }
 
-  _getTextSpans() {
+  _getTextSpans(TextDecoration underline) {
     List<TextSpan> _textSpans = <TextSpan>[];
     int i = 0;
     int pos = 0;
@@ -84,7 +87,7 @@ class Linkable extends StatelessWidget {
         _textSpans.add(_link(
             text.substring(
                 _links[pos].regExpMatch.start, _links[pos].regExpMatch.end),
-            _links[pos].type));
+            _links[pos].type, underline));
         i = _links[pos].regExpMatch.end;
         pos++;
       } else {
@@ -98,10 +101,10 @@ class Linkable extends StatelessWidget {
     return TextSpan(text: text, style: TextStyle(color: textColor));
   }
 
-  _link(String text, String type) {
+  _link(String text, String type, TextDecoration underline) {
     return TextSpan(
         text: text,
-        style: TextStyle(color: linkColor, decoration: TextDecoration.underline),
+        style: TextStyle(color: linkColor, decoration: underline),
         recognizer: TapGestureRecognizer()
           ..onTap = () {
             _launch(_getUrl(text, type));
