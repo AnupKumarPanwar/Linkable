@@ -13,9 +13,40 @@ Note: You don't need to specify the URL scheme (mailto, tel etc). The widget wil
 To install the package, add the following dependency to your `pubspec.yaml`
 ```
 dependencies:
-  linkable: ^1.0.5
-  url_launcher: ^5.4.10
+  linkable: ^3.0.1
+  url_launcher: ^6.0.9
 ```
+### Android
+
+Starting from API30 (Android 11), your Android app has to list all apps it interacts with.
+
+The following is required in AndroidManifest.xml or links will fail to launch.
+
+```
+<manifest>
+
+    <!-- Nest within the manifest element, not the application element-->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.DIAL" />
+            <data android:scheme="tel" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.SEND" />
+            <data android:mimeType="*/*" />
+        </intent>
+    </queries>
+
+    <application>
+        ....
+    </application>
+</manifest>
+```
+
 ## Usage
 ### Basic
 ```
@@ -37,9 +68,7 @@ Linkable(
 | `textAlign` 		|  TextAlign value. (default: TextAlign.start)						|
 | `textDirection` 	|  Determines the order to lay children out horizontally. 			|
 | `maxLines` 		|  Maximum number of lines to be displayed. 						|
-| `overflow` 		|  Handles text that crosses maxLines. (default: TextOverflow.clip)	|
 | `textScaleFactor`	|  The number of font pixels for each logical pixel. 				|
-| `locale` 			|  Sets text locale.												|
 
 ## Screenshot
 ![Screenshot](./example/screenshot.png)

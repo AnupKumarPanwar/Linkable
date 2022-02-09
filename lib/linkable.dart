@@ -25,65 +25,56 @@ class Linkable extends StatelessWidget {
 
   final maxLines;
 
-  final overflow;
-
   final textScaleFactor;
 
-  final softWrap;
-
   final strutStyle;
-
-  final locale;
 
   final textWidthBasis;
 
   final textHeightBehavior;
 
-  List<Parser> _parsers = List<Parser>();
-  List<Link> _links = List<Link>();
+  final underline;
+
+  List<Parser> _parsers = <Parser>[];
+  List<Link> _links = <Link>[];
 
   Linkable({
-    Key key,
-    @required this.text,
+    Key? key,
+    required this.text,
     this.textColor = Colors.black,
     this.linkColor = Colors.blue,
     this.style,
     this.textAlign = TextAlign.start,
     this.textDirection,
-    this.softWrap = true,
-    this.overflow = TextOverflow.clip,
     this.textScaleFactor = 1.0,
     this.maxLines,
-    this.locale,
     this.strutStyle,
     this.textWidthBasis = TextWidthBasis.parent,
     this.textHeightBehavior,
+    this.underline,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     init();
-    return RichText(
+    return SelectableText.rich(
+      TextSpan(
+        text: '',
+        style: style,
+        children: _getTextSpans(underline),
+      ),
       textAlign: textAlign,
       textDirection: textDirection,
-      softWrap: softWrap,
-      overflow: overflow,
       textScaleFactor: textScaleFactor,
       maxLines: maxLines,
-      locale: locale,
       strutStyle: strutStyle,
       textWidthBasis: textWidthBasis,
       textHeightBehavior: textHeightBehavior,
-      text: TextSpan(
-        text: '',
-        style: style,
-        children: _getTextSpans(),
-      ),
     );
   }
 
-  _getTextSpans() {
-    List<TextSpan> _textSpans = List<TextSpan>();
+  _getTextSpans(TextDecoration underline) {
+    List<TextSpan> _textSpans = <TextSpan>[];
     int i = 0;
     int pos = 0;
     while (i < text.length) {
@@ -96,7 +87,7 @@ class Linkable extends StatelessWidget {
         _textSpans.add(_link(
             text.substring(
                 _links[pos].regExpMatch.start, _links[pos].regExpMatch.end),
-            _links[pos].type));
+            _links[pos].type, underline));
         i = _links[pos].regExpMatch.end;
         pos++;
       } else {
@@ -110,10 +101,10 @@ class Linkable extends StatelessWidget {
     return TextSpan(text: text, style: TextStyle(color: textColor));
   }
 
-  _link(String text, String type) {
+  _link(String text, String type, TextDecoration underline) {
     return TextSpan(
         text: text,
-        style: TextStyle(color: linkColor),
+        style: TextStyle(color: linkColor, decoration: underline),
         recognizer: TapGestureRecognizer()
           ..onTap = () {
             _launch(_getUrl(text, type));
@@ -161,10 +152,9 @@ class Linkable extends StatelessWidget {
 
   _filterLinks() {
     _links.sort(
-            (Link a, Link b) =>
-            a.regExpMatch.start.compareTo(b.regExpMatch.start));
+        (Link a, Link b) => a.regExpMatch.start.compareTo(b.regExpMatch.start));
 
-    List<Link> _filteredLinks = List<Link>();
+    List<Link> _filteredLinks = <Link>[];
     if (_links.length > 0) {
       _filteredLinks.add(_links[0]);
     }

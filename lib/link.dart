@@ -2,5 +2,5 @@ class Link {
   RegExpMatch regExpMatch;
   String type;
 
-  Link({this.regExpMatch, this.type});
+  Link({required this.regExpMatch, required this.type});
 }

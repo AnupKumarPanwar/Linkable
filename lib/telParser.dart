@@ -13,7 +13,7 @@ class TelParser implements Parser {
     RegExp regExp = RegExp(pattern);
 
     Iterable<RegExpMatch> _allMatches = regExp.allMatches(text);
-    List<Link> _links = List<Link>();
+    List<Link> _links = <Link>[];
     for (RegExpMatch match in _allMatches) {
       _links.add(Link(regExpMatch: match, type: tel));
     }
