@@ -1,0 +1,18 @@
+name: linkable_example
+description: linkable example
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.3 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  url_launcher: ^6.1.14
+  linkable:
+    path: ..
+
+flutter:
+  uses-material-design: true
