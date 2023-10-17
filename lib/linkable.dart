@@ -34,7 +34,7 @@ class Linkable extends StatelessWidget {
   final TextHeightBehavior? textHeightBehavior;
 
   final List<Parser> _parsers = <Parser>[];
-  List<Link> _links = <Link>[];
+  final List<Link> _links = <Link>[];
 
   Linkable({
     Key? key,
@@ -160,6 +160,7 @@ class Linkable extends StatelessWidget {
         filteredLinks.add(_links[i + 1]);
       }
     }
-    _links = filteredLinks;
+    _links.clear();
+    _links.addAll(filteredLinks);
   }
 }
