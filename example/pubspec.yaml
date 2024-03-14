@@ -14,5 +14,9 @@ dependencies:
   linkable:
     path: ..
 
+
+dev_dependencies:
+  flutter_lints: ^2.0.0
+
 flutter:
   uses-material-design: true
