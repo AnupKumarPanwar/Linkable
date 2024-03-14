@@ -8,16 +8,27 @@ class HttpParser implements Parser {
   HttpParser(this.text);
 
   @override
-  parse() {
-    String pattern =
-        r"(http(s)?:\/\/)?(www.)?[a-zA-Z0-9]{2,256}\.[a-zA-Z0-9]{2,256}(\.[a-zA-Z0-9]{2,256})?([-a-zA-Z0-9@:%_\+~#?&//=.]*)([-a-zA-Z0-9@:%_\+~#?&//=]+)";
+  List<Link> parse() {
+    const pattern =
+        r'\b((www\.|https?://)[^\s]+)|([a-zA-Z0-9\-]+(\.[a-zA-Z0-9\-]+)+(:\d+)?(/[^\s]*)?)\b';
 
-    RegExp regExp = RegExp(pattern, caseSensitive: false);
+    final regExp = RegExp(pattern, caseSensitive: false);
+    final allMatches = regExp.allMatches(text);
+    final links = <Link>[];
 
-    Iterable<RegExpMatch> allMatches = regExp.allMatches(text);
-    List<Link> links = <Link>[];
-    for (RegExpMatch match in allMatches) {
-      links.add(Link(regExpMatch: match, type: http));
+    for (final match in allMatches) {
+      String urlString = match.group(0)!;
+
+      if (!urlString.startsWith('http://') &&
+          !urlString.startsWith('https://')) {
+        urlString = 'https://$urlString';
+      }
+
+      final uri = Uri.parse(urlString);
+
+      if ((uri.scheme == 'http' || uri.scheme == 'https') && uri.hasAuthority) {
+        links.add(Link(regExpMatch: match, type: http));
+      }
     }
     return links;
   }

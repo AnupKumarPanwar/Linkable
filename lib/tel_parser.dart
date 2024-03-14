@@ -3,21 +3,27 @@ import 'package:linkable/link.dart';
 import 'package:linkable/parser.dart';
 
 class TelParser implements Parser {
-  String text;
+  const TelParser(
+    this.text, {
+    this.regExpPattern,
+  });
 
-  TelParser(this.text);
+  final String text;
+  final String? regExpPattern;
 
   @override
-  parse() {
-    String pattern = r"\+?\(?([0-9]{2,4})\)?[- ]?([0-9]{3,4})[- ]?([0-9]{3,7})";
+  List<Link> parse() {
+    const pattern =
+        r"\+?\(?([0-9]{2,4})\)?[- .]?([0-9]{3,4})[- .]?([0-9]{3,7})";
 
-    RegExp regExp = RegExp(pattern);
+    final regExp = RegExp(regExpPattern ?? pattern);
+    final allMatches = regExp.allMatches(text);
+    final links = <Link>[];
 
-    Iterable<RegExpMatch> allMatches = regExp.allMatches(text);
-    List<Link> links = <Link>[];
-    for (RegExpMatch match in allMatches) {
+    for (final match in allMatches) {
       links.add(Link(regExpMatch: match, type: tel));
     }
+
     return links;
   }
 }
