@@ -12,29 +12,16 @@ import 'package:url_launcher/url_launcher.dart';
 
 class Linkable extends StatelessWidget {
   final String text;
-
   final Color? textColor;
-
   final Color? linkColor;
-
   final TextStyle? style;
-
   final TextAlign? textAlign;
-
   final TextDirection? textDirection;
-
   final int? maxLines;
-
   final double? textScaleFactor;
-
   final StrutStyle? strutStyle;
-
   final TextWidthBasis? textWidthBasis;
-
   final TextHeightBehavior? textHeightBehavior;
-
-  final List<Parser> _parsers = <Parser>[];
-  final List<Link> _links = <Link>[];
 
   Linkable({
     Key? key,
@@ -51,14 +38,107 @@ class Linkable extends StatelessWidget {
     this.textHeightBehavior,
   }) : super(key: key);
 
+  List<Link> _parseLinks() {
+    final parsers = <Parser>[
+      EmailParser(text),
+      HttpParser(text),
+      TelParser(text),
+    ];
+
+    final allLinks = <Link>[];
+    for (final parser in parsers) {
+      allLinks.addAll(parser.parse());
+    }
+
+    if (allLinks.isEmpty) return allLinks;
+
+    // Sort by start position
+    allLinks.sort((a, b) => a.regExpMatch.start.compareTo(b.regExpMatch.start));
+
+    // Filter overlapping links, keeping the first occurrence
+    final filteredLinks = <Link>[allLinks.first];
+    for (var i = 1; i < allLinks.length; i++) {
+      if (allLinks[i].regExpMatch.start > filteredLinks.last.regExpMatch.end) {
+        filteredLinks.add(allLinks[i]);
+      }
+    }
+
+    return filteredLinks;
+  }
+
+  List<TextSpan> _getTextSpans(List<Link> links) {
+    if (links.isEmpty) {
+      return [_text(text)];
+    }
+
+    final textSpans = <TextSpan>[];
+    var currentIndex = 0;
+
+    for (final link in links) {
+      final match = link.regExpMatch;
+      
+      // Add text before the link
+      if (currentIndex < match.start) {
+        textSpans.add(_text(text.substring(currentIndex, match.start)));
+      }
+
+      // Add the link
+      final linkText = text.substring(match.start, match.end);
+      textSpans.add(_link(linkText, link.type));
+      currentIndex = match.end;
+    }
+
+    // Add remaining text after the last link
+    if (currentIndex < text.length) {
+      textSpans.add(_text(text.substring(currentIndex)));
+    }
+
+    return textSpans;
+  }
+
+  TextSpan _text(String text) {
+    return TextSpan(text: text, style: TextStyle(color: textColor));
+  }
+
+  TextSpan _link(String text, String type) {
+    return TextSpan(
+      text: text,
+      style: TextStyle(color: linkColor),
+      recognizer: TapGestureRecognizer()
+        ..onTap = () => _launch(_getUrl(text, type)),
+    );
+  }
+
+  Future<void> _launch(String url) async {
+    final uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw Exception('Could not launch $url');
+    }
+  }
+
+  String _getUrl(String text, String type) {
+    switch (type) {
+      case http:
+        return text.startsWith('http') ? text : 'http://$text';
+      case email:
+        return text.startsWith('mailto:') ? text : 'mailto:$text';
+      case tel:
+        return text.startsWith('tel:') ? text : 'tel:$text';
+      default:
+        return text;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    init();
+    final links = _parseLinks();
+    final textSpans = _getTextSpans(links);
+
     return SelectableText.rich(
       TextSpan(
         text: '',
         style: style,
-        children: _getTextSpans(),
+        children: textSpans,
       ),
       textAlign: textAlign,
       textDirection: textDirection,
@@ -68,99 +148,5 @@ class Linkable extends StatelessWidget {
       textWidthBasis: textWidthBasis,
       textHeightBehavior: textHeightBehavior,
     );
-  }
-
-  _getTextSpans() {
-    List<TextSpan> textSpans = <TextSpan>[];
-    int i = 0;
-    int pos = 0;
-    while (i < text.length) {
-      textSpans.add(_text(text.substring(
-          i,
-          pos < _links.length && i <= _links[pos].regExpMatch.start
-              ? _links[pos].regExpMatch.start
-              : text.length)));
-      if (pos < _links.length && i <= _links[pos].regExpMatch.start) {
-        textSpans.add(_link(
-            text.substring(
-                _links[pos].regExpMatch.start, _links[pos].regExpMatch.end),
-            _links[pos].type));
-        i = _links[pos].regExpMatch.end;
-        pos++;
-      } else {
-        i = text.length;
-      }
-    }
-    return textSpans;
-  }
-
-  _text(String text) {
-    return TextSpan(text: text, style: TextStyle(color: textColor));
-  }
-
-  _link(String text, String type) {
-    return TextSpan(
-        text: text,
-        style: TextStyle(color: linkColor),
-        recognizer: TapGestureRecognizer()
-          ..onTap = () {
-            _launch(_getUrl(text, type));
-          });
-  }
-
-  _launch(String url) async {
-    if (!await launchUrl(Uri.parse(url),
-        mode: LaunchMode.externalApplication)) {
-      throw Exception('Could not launch $url');
-    }
-  }
-
-  _getUrl(String text, String type) {
-    switch (type) {
-      case http:
-        return text.substring(0, 4) == 'http' ? text : 'http://$text';
-      case email:
-        return text.substring(0, 7) == 'mailto:' ? text : 'mailto:$text';
-      case tel:
-        return text.substring(0, 4) == 'tel:' ? text : 'tel:$text';
-      default:
-        return text;
-    }
-  }
-
-  init() {
-    _addParsers();
-    _parseLinks();
-    _filterLinks();
-  }
-
-  _addParsers() {
-    _parsers.add(EmailParser(text));
-    _parsers.add(HttpParser(text));
-    _parsers.add(TelParser(text));
-  }
-
-  _parseLinks() {
-    for (Parser parser in _parsers) {
-      _links.addAll(parser.parse().toList());
-    }
-  }
-
-  _filterLinks() {
-    _links.sort(
-        (Link a, Link b) => a.regExpMatch.start.compareTo(b.regExpMatch.start));
-
-    List<Link> filteredLinks = <Link>[];
-    if (_links.isNotEmpty) {
-      filteredLinks.add(_links[0]);
-    }
-
-    for (int i = 0; i < _links.length - 1; i++) {
-      if (_links[i + 1].regExpMatch.start > _links[i].regExpMatch.end) {
-        filteredLinks.add(_links[i + 1]);
-      }
-    }
-    _links.clear();
-    _links.addAll(filteredLinks);
   }
 }

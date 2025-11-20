@@ -20,7 +20,7 @@ To install the package, add the following dependency to your `pubspec.yaml`
 
 ```
 dependencies:
-  linkable: ^3.0.2
+  linkable: ^4.0.0
   url_launcher: ^6.1.14
 ```
 

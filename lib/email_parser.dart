@@ -3,21 +3,16 @@ import 'package:linkable/link.dart';
 import 'package:linkable/parser.dart';
 
 class EmailParser implements Parser {
-  String text;
+  final String text;
+  static final RegExp _pattern = RegExp(r"[\w-\.]+@([\w-]+\.)+[\w-]{2,4}");
 
-  EmailParser(this.text);
+  const EmailParser(this.text);
 
   @override
-  parse() {
-    String pattern = r"[\w-\.]+@([\w-]+\.)+[\w-]{2,4}";
-
-    RegExp regExp = RegExp(pattern);
-
-    Iterable<RegExpMatch> allMatches = regExp.allMatches(text);
-    List<Link> links = <Link>[];
-    for (RegExpMatch match in allMatches) {
-      links.add(Link(regExpMatch: match, type: email));
-    }
-    return links;
+  List<Link> parse() {
+    return _pattern
+        .allMatches(text)
+        .map((match) => Link(regExpMatch: match, type: email))
+        .toList();
   }
 }

@@ -1,18 +1,17 @@
 name: linkable
 description: A Flutter widget to add links to your text. Linkable widget is a wrapper over RichText which allows you to render links that can be clicked to redirect to the URL.
-version: 3.0.2
+version: 4.0.0
 homepage: https://github.com/AnupKumarPanwar/Linkable
 
 environment:
-  sdk: '>=3.1.3 <4.0.0'
-  flutter: ">=1.17.0"
+  sdk: ^3.10.0
 
 dependencies:
   flutter:
     sdk: flutter
-  url_launcher: ^6.1.14
+  url_launcher: ^6.3.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^6.0.0
