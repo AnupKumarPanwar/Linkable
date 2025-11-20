@@ -49,3 +49,7 @@
 ## [3.0.2] - 17 October 2023.
 
 * Upgrade flutter version.
+
+## [4.0.0] - 21 October 2025.
+
+* Upgrade flutter version.
